@@ -79,7 +79,7 @@
 
 ## 2) Create a local clone of fork
 
-    `   $ git clone -o <branchname> https://github.com/<YOUR-USERNAME>/<project-name>`
+`   $ git clone -o <branchname> https://github.com/<YOUR-USERNAME>/<project-name>`
 
 
 - Clone does these cmd :
@@ -148,7 +148,7 @@
 
 
 - If fetching new remote-tracking branch, no file downloaded locally. Only have pointer to <remote>/<branchname> that you cant modify.
-    - To get local copy of new branch, can base it off remote-tracking branch
+- To get local copy of new branch, can base it off remote-tracking branch
     ```
     $ git checkout -b <localbranchname> <remote/branchname>
         [ Branch <localbranchname> set up to track remote branch <remote/branchname> from <remote>
@@ -168,22 +168,20 @@
 - If no paths specified, will also update HEAD to the specified branch as the current branch
     ```
     $ git checkout <branchname>
-    ```
 
+    - When switching branches, proceed even if the index or the working tree differs from HEAD. This is used to throw away local changes.
 
-- When switching branches, proceed even if the index or the working tree differs from HEAD. This is used to throw away local changes.
-    ```
     $ git checkout -f <branchname>
     ```
 
     Or
-    - Simplified command to create new branch and get HEAD version of specified branch
+- Simplified command to create new branch and get HEAD version of specified branch
     ```
     $ git checkout -b <branchname>
     ```
 
-    - List of branches available locally 
-    - \* denotes the current/active branch working on
+- List of branches available locally 
+- \* denotes the current/active branch working on
     ```
     $ git branch
       [ * master
@@ -417,7 +415,8 @@
     ```
 
 - Git able to rebase from multiple level branched out locations.
-    - Rebase from 1-level branched out (master branch out to server branch)
+    ###### Rebase from 1-level branched out 
+    - (master branch out to server branch)
     - Want to rebase from server branch back to master branch
     - This replays changes to server on top of master branch
     ```
@@ -427,9 +426,9 @@
         $ git merge server
     ```
 
-
-    - Rebase from 2-level branched out (master branched out to server; server branched out to client)
-    - master branch-to server (1st level) and server branch-to client(2nd level)
+    ###### Rebase from 2-level branched out
+    - (master branched out to server; server branched out to client)
+        - master branch-to server (1st level) and server branch-to client(2nd level)
     - Only rebase from 2nd level branch back to master branch, leaving changes in 1st level out of rebase.
     - Takes client branch, figure out patches since it diverged from server branch and replay patches in client as though it was based directly off masster branch.
     ```
