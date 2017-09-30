@@ -39,12 +39,20 @@
     $ git diff HEAD        // get diff between last checkin(HEAD) and current repo last checkin
     $ git diff --staged    // get diff made to staged files
     $ git diff <source_branch> <target_branch>   // preview any merge conflicts btw branches
+    $ git diff <SHA ver> <SHA ver> // get diff btw SHA versions
+    $ git diff HEAD~5 // last 5th diff
+    $ git diff HEAD^..HEAD // get diff btw 2nd last and last commit
     ```
 
 
 - Switch branches or restore working branch files
     ```
     $ git checkout <branch>
+    ```
+
+- Revert working files to committed location
+    ```
+    $ git checkout --<filename>
     ```
 
 
@@ -114,14 +122,22 @@
     ```    
     $ git remote add <branchname> https://github.com/user/[openSourceProject].git
     ```
-
+- Remove remote
+    ```
+    $ git remote rm <branchname>
+    ```
 
 - Verify remote added origin: 
     ```
     $ git remote -v
     ```
 
-
+- Getting from own remote repo, use git pull
+    ```
+    $ git pull
+    ```
+ 
+- For non-owned remote repo :
 - Get updated work 'pushed' to remote since last cloned / fetch and into local repo
 - Only downloads the data to your local repository – it doesn’t automatically merge with current local branch.
 - What this does is sets a remote-tracking branch called <remote>/<branch> to point to the commit
@@ -196,13 +212,6 @@
     or  $ git add <filename>
     ```
 
-
-- Remove files from "staged area"
-    ```
-    $ git rm --cached <filename>
-    ```
-
-
 - Remove newly added files from staged session
     ```
     $ git reset HEAD <filename>
@@ -213,17 +222,39 @@
     $ git checkout -- <filename>
     ```
 
+- Stops tracking tracked files
+    ```
+    $ git rm --cached <filename>
+    ```
 
 - Commit changes to local repo
     ```
     $ git commit <filename> -m "commit msg here"
+    $ git commit -a -m "commit msg" //this adds to staging area AND commits
     ```
 
+- Make/Add changes to the last commit
+    ```
+    $ git commit --amend -m "amended commit msg to override the prev commit msg"
+    ```
+
+- Undo prev commit, put changes into staging (^ refers to one rev before HEAD)
+    ```
+    $ git reset --soft HEAD^ 
+    ```
+
+- Undo prev commit & revert all changes (^ refers to one rev before HEAD)
+    ```
+    $ git reset --hard HEAD^
+    $ git reset --hard HEAD^^ (undo last 2 commits and all changes)
+    ```
 
 - Push commited changes to repo
     ```
     $ git push <remote name> <local branch name>
     ```
+
+-Note: DO NOT do git reset / commit --amend after doing git push
 
 
 ## 4) Branching in Git
@@ -314,6 +345,12 @@
     ```
     $ git push <remote> --delete <branchname>
     ```
+
+- To delete local branches which have been removed from remote, remove stale references
+    ```
+    $ git remote prune <branchname>
+    ```
+
 
 ## 7) Pushing
 - Local branches needs to synchronize to the remotes - explicitly push the branch to collaborate.
@@ -408,6 +445,13 @@
     $ git rebase <rebase to>
     ```
 
+- Mark Merge rebase conflicts as completed
+    ```
+    $ git rebase --continue
+    $ git rebase --skip
+    $ git rebase --abort
+    ```
+
     - e.g: Branch abc branched from master, to rebase abc back into master
     ```
         $ git checkout abc
@@ -438,4 +482,29 @@
     ```
 
 - Note : always only rebase local changes made which haven't been pushed; never rebase anything that has been pushed somewhere.
+
+
+## 11) Tagging
+- A tag is a reference to a commit (usually for release versioning)
+- List of tag in branch
+    ```
+    $ git tag 
+        [v0.0.1
+         v0.0.2]
+    ```
+
+- Checkout based on tag reference
+    ```
+    $ git checkout <tag-version>
+    ```
+
+- Create new tag
+    ```
+    $ git tag -a <tag-version> -m "tag msg"
+    ```
+
+- Push new tags to remove
+    ```
+    $ git push --tags
+    ```
 
