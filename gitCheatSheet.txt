@@ -157,14 +157,14 @@ Or
     $ git add .
 or  $ git add <filename>
 
+- Remove files from "staged area"
+    $ git rm --cached <filename>
+
 - Remove newly added files from staged session
     $ git reset HEAD <filename>
 
 - To discard changes in working directory and replace files with repo version
     $ git checkout -- <filename>
-
-- Stops tracking tracked files
-    $ git rm --cached <filename>
 
 - Commit changes to local repo
     $ git commit <filename> -m "commit msg here"
@@ -179,6 +179,9 @@ or  $ git add <filename>
 - Undo prev commit & revert all changes (^ refers to one rev before HEAD)
     $ git reset --hard HEAD^
     $ git reset --hard HEAD^^ (undo last 2 commits and all changes)
+
+- To remove all changes in local branch
+    $ git reset --hard origin/master
 
 - Push commited changes to repo
     $ git push <remote name> <local branch name>
@@ -375,8 +378,6 @@ e.g:
 
 - Note : always only rebase local changes made, which haven't been pushed; never rebase anything that has been pushed somewhere.
 
-
-
 ----------------------------------------------
 11) Tagging
 ----------------------------------------------
@@ -394,6 +395,89 @@ e.g:
 
 - Push new tags to remove
     $ git push --tags
+
+12) Working on a forked repo
+----------------------------------------------
+- Must configure a remote that points to the upstream repository in Git to sync changes you make in a fork with the original repository. 
+- List the current configured remote repository for your fork.
+    $ git remote -v
+        [ origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+]
+
+- Specify a new remote upstream repository that will be synced with the fork.
+    $ git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+
+- Remove remote 
+    $ git remote rm upstream
+
+- Verify the new upstream repository you've specified for your fork.
+    $ git remote -v
+        [
+        origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+        origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+        upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)
+        upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)
+        ]
+
+- Fetch the branches and their respective commits from the upstream repository. Commits to master will be stored in a local branch, upstream/master.
+    $ git fetch upstream
+        [
+        remote: Counting objects: 75, done.
+        remote: Compressing objects: 100% (53/53), done.
+        remote: Total 62 (delta 27), reused 44 (delta 9)
+        Unpacking objects: 100% (62/62), done.
+        From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY
+         * [new branch]      master     -> upstream/master
+        ]
+
+- Update fork from original repo to sync:
+    $ git pull upstream master //<from><to>
+    $ git pull --rebase upstream master
+Or :
+    - Check out your fork's local master branch.
+        $ git checkout master
+
+    - Merge the changes from upstream/master into your local master branch. This brings your fork's master branch into sync with the upstream repository, without losing your local changes.
+        $ git merge upstream/master
+
+        Or:
+        - Rewrite your master branch so that any commits of yours that aren't already in upstream/master are replayed on top of that other branch:
+            $ git rebase upstream/master
+
+- Sync back to fork :
+    $ git push
+
+====== Note :======
+- Create local branch off master. So when rebasing / merge will happen to master branch. And local feature changes can be merged on top of the master.
+
+- Rebase when branch is checkout out, changes made and want to rebase back to the original branch.
+    e.g: Merging changes back into the trunk when completed
+
+- Merge when changes wants to be merged from one branch to the other
+    e.g: Merging newly updated changes from upstream/master -> master 
+            then updating local branched with latest changes from master
+            
+
+----------------------------------------------
+13) Creating A Pull Request (PR)
+----------------------------------------------
+- Pull request can only be opened if there are changes between your branch and the upstream branch.
+- The base branch is where changes should be applied, the head branch contains what you would like to be applied.
+- Comparison link : https://help.github.com/articles/comparing-commits-across-time/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
