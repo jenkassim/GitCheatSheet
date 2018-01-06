@@ -170,7 +170,7 @@ For Git :
 
   - Creates a pointer to its origin master branch and that pointer is named origin/master locally
   - Creates own local master branch starting at the same place[position/pointer] as origin's master branch at that point in time.
-  - Auto fetch and merge the remote branch (origin/master) into your current (master) branch.    
+  - Auto fetch and merge the remote branch (origin/master) into your current (master) branch.
     $ git fetch
     $ git pull origin master
   ```
@@ -180,34 +180,48 @@ For Git :
 - A remote needs to be configured so that it points to the upstream repository in Git and will sync any changes made to the original repo.
 - This gets the updates from the original repo into local branch and pushes the updates into your forked branch, making your local and remote repo in sync with the original forked-from repo.
 
-### Do Pull
-- Get updates from remote source repo (where it was forked from)
+### <u>Method 1: Rebase</u>
+#### Do Rebase
+- Merge can also be replaced by using rebase, which re-writes your master branch so that your commits are replayed on top of the branch.
   ```
-    $ git pull <from remote repo> <to local branch>
+    $ git rebase <remote/branch>
   ```
 
-### Do Merge
+### <u>Method 2 : Pull</u>
+#### Do Pull
+- Get updates from remote source repo (where it was forked from)
+  ```
+    $ git checkout <local branch>
+    $ git pull <remote repo> <remote branch>
+    $ git pull upstream master
+  ```
+
+### <u>Method 3 : Fetch & Merge</u>
+#### Do Merge
 - Switch to branch
   ```
     $ git checkout <branch-name>
   ```
-- Merge the latest changes from remote (upstream/master) into local master branch. This brings your fork's master branch into sync with the upstream repository, without losing your local changes.
+
+- Fetch from remote repo (without merging)
+- Good to have a look at what has been changed.
   ```
-    $ git merge <from branch> <to branch>
+    $ git fetch <remote-name>
   ```
 
-### Do Rebase
-- Merge can also be replaced by using rebase, which re-writes your master branch so that your commits are replayed on top of the branch.
+- Merge the latest changes from remote (upstream/master) into local master branch. This brings your fork's master branch into sync with the upstream repository, without losing your local changes.
   ```
-    $ git rebase <remote branch>
+    $ git merge <remote/branch> <local/branch>
   ```
+
 
 ### Do Push
 - Push to forked remote repo
   ```
-    $ git push origin/master
+    $ git push origin master
   ```
 [^](#the-gist-of-git)
+
 
 ## Rebase To Remote
 - If remote repo was updated by others and your local repo version is not the latest, a push will cause an error. In the case of SVN, you'll need to do a svn update the local branch and resolve conflicts before being able to commit to the centralized repo.
@@ -228,7 +242,7 @@ For Git :
     ```
 
 - To remove all changes in local branch
-    ```    
+    ```
       $ git rebase origin/master
       $ git reset --hard origin/master
     ```
@@ -242,11 +256,11 @@ For Git :
 - Remove files from staged-area
     ```
       $ git rm --cached <filename>
-    ```      
+    ```
 - Remove newly added files from staged session
     ```
       $ git reset HEAD <filename>
-    ```      
+    ```
 
 ### Commit to HEAD
 - Commit changes to local repo
@@ -259,16 +273,16 @@ For Git :
   ```
 
 - Make/Add changes to the last commit
-    ```  
+    ```
       $ git commit --amend -m "amended commit msg to override the prev commit msg"
-    ```     
+    ```
 - Undo prev commit, put changes into staging (^ refers to one rev before HEAD)
-    ```  
+    ```
       $ git reset --soft HEAD^
     ```
 
 - Undo prev commit & revert all changes (^ refers to one rev before HEAD)
-    ```  
+    ```
       $ git reset --hard HEAD^
       $ git reset --hard HEAD^^ (undo last 2 commits and all changes)
     ```
@@ -340,7 +354,7 @@ For Git :
            * serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this should do it
            testing   5ea463a trying something new
         ]
-  ```      
+  ```
   - iss53 is tracking origin/iss53 : have 2 local commits that are not pushed to server
   - serverfix tracking teamone server : have 3 local commits and one server commit which havent merged into local branch
 
@@ -363,14 +377,14 @@ For Git :
     $ git branch -u origin/serverfix
         [
           Branch serverfix set up to track remote branch serverfix from origin.
-        ]  
+        ]
   ```
 
 [^](#the-gist-of-git)
 
 ## Fetch
 - Gets updated worked 'pushed' to remote repo since it was last cloned or fetched into own local, it will not modify/download to local working directory.
-- Fetching from a repository grabs all the new remote-tracking branches and tags without merging those changes into your own branches.
+- Fetching from a repository grabs all the new remote-tracking branches and tags <b><u>without merging</b></u> those changes into your own branches.
 - What this does is sets a remote-tracking branch called <remote>/<branch> with pointer movement to get new updated position on remote master.
 - Note the command only takes remote name parameter and not the branch name, unlike the pull command.
   ```
@@ -384,7 +398,7 @@ For Git :
           From https://github.com/username/project-name
            * [new branch]      master     -> origin/master
         ]
-  ```  
+  ```
 - Fetch all branches in the remote repo to local repo 'origin/master'
   ```
     $ git fetch [--all | origin]
@@ -524,7 +538,7 @@ For Git :
 - Single liner to do merge
   ```
       $ git merge <from branch> <to branch>
-  ```  
+  ```
 - Merge terminology:
   - Fast-forward : Merged directly, like adding an additional node at the end of master, pointer just moves forward
   - Recursive strategy : Merged into a diverged path. Git does a 3-way merge using multiple snapshots pointed by branch tip
