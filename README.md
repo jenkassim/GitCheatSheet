@@ -450,6 +450,13 @@ For Git :
            * [new branch]      serverfix -> serverfix
         ]
     ```
+
+- To push any new branches without remote and set the remote as upstream
+  ```
+    $ git push --set-upstream <remote name> <local branch name>
+    $ git push --set-upstream origin newbranch
+  ```
+
 - Note: DO NOT do git reset / commit --amend after doing git push
 
 [^](#the-gist-of-git)
