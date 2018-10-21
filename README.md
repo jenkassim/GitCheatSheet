@@ -233,6 +233,15 @@ For Git :
     $ git push <to remote branch><from local branch>
     $ git push origin master
   ```
+
+- Via fetch : 
+  ``` 
+    $ git remote add upstream <remote-link.git>
+    $ git fetch upstream
+
+    $ git rebase upstream/master
+  ```
+
 [^](#the-gist-of-git)
 
 ## Commits And Modifications
