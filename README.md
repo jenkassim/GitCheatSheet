@@ -24,7 +24,7 @@ Below describes the notation that's used in this sheet:
 - [Get Diff](#get-diff)
 - [View Branches](#view-branches)
 - [View Remote](#view-remote)
-
+- [Staging Index](#staging-index)
 
 ## Part III : Commands descriptions
 - [Create A Fork](#create-a-fork)
@@ -39,6 +39,8 @@ Below describes the notation that's used in this sheet:
 - [Push](#push)
 - [Merge](#merge)
 - [Rebase](#rebase)
+- [Revert](#revert)
+- [Reset](#reset)
 - [Tagging](#tagging)
 
 # Part I   : Getting Git
@@ -150,6 +152,22 @@ For Git :
     $ git remove show <remote-name>
   ```
 [^](#the-gist-of-git)
+
+## Staging Index
+- List files names and path of the index
+- Check staging index
+```
+  $ git ls-files
+  $ git ls-files -s
+    [
+      // mode bits | object name | stage number | filename
+      100644 32858aad3c383ed1ff0a0f9bdf231d54a00c9e88 0 .gitignore
+      100644 26e60dce22454f90bd43b5e47bf8f51101ad62ce 0 README.md
+      100644 f5cf6c384ef3fc311e7b1215d094c0ae0ac18b40 0 gitCheatSheet.txt
+    ]
+
+```
+- Once file has been added to staging area, the value of object name will change
 
 
 # Part III : Commands descriptions
@@ -612,6 +630,64 @@ For Git :
 - Note : always only rebase local changes made, which haven't been pushed to server; as it can modify the history and revert changes on those remotes.
 
 [^](#the-gist-of-git)
+
+## Revert
+- Git revert takes a specified commit but does NOT move the HEAD and branch ref pointer as what `checkout` and `reset` does.
+- Revert inverse the changes from a specific commit and creates a new revert commit.
+- Ref pointers then points to the new revert commit.
+- Able to target an individual commit at an arbitrary point in the history
+- Safest, most basic undo scenario as it doesn't change history with the mistaken commit.
+
+```
+  $ git revert <SHA>
+  $ git revert HEAD
+    [
+      [master b9cd081] Revert "revert commit msg here"
+      1 file changed, 1 deletion(-)
+    ]
+```
+
+## Reset
+- Only work backward from the current commit.
+- Command for undoing changes, three types of reset that correspond to Git's three tree internal state:
+```
+    --soft  : The Commit Tree (HEAD)
+    --mixed : The Staging Index to Commit  Tree
+    --hard  : The Working Directory to Commit Tree
+```
+
+- Git reset, moves both the HEAD and branch refs to the specified commit.
+  (Git checkout will only move the HEAD pointer, and branch ref pointer will remain as is)
+
+- When HEAD and branch refs pointer moves, Commit Tree gets updated.
+- The command line arguments --soft, --mixed, and --hard directs how to modify the Staging Index, and Working Directory trees.
+
+
+```
+            Working    Staging     Commit
+            Directory  Snapshot    History
+
+--hard         x          x          x
+
+--mixed                   x          x
+
+--soft                               x
+
+```
+
+#### --hard
+- When used, Commit ref pointers update to specified commit. Staging Index and Working Directory will be updated to reflect the same specified commit.
+- Any previous pending changes to Staging Index & Working Directory gets reset to match state of Commit Tree.
+- Any pending work in the Staging Index and Working Directory will be lost.
+
+#### --mixed
+- Default mode when no options are provided to `git reset`
+- Ref pointers are updated and Staging Index is reset to the state in specified commit.
+- Changes that been undone from Staging Index are moved to Working Directory.
+
+#### --soft
+- Ref pointers updated and reset stops there. Staging Index and working directory remain unchanged.
+
 
 ## Tagging
 - A tag is a reference to a commit (usually for release versioning)
